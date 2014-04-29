@@ -57,17 +57,20 @@ public class MainActivity extends Activity {
 	            int position, long id) {
 				  String updateItem = (String) lvItems.getAdapter().getItem(position);  
                   Log.i("Selected Item in list", updateItem); 
-                  Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+                  Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+                  if(intent!=null)
+                  {
+                	  //Log.i("launch intent",updateItem);
                   // put "extras" into the bundle for access in the second activity
-                  i.putExtra("item", updateItem); 
-                  i.putExtra("position", position); 
-                  // brings up the second activity
-                  startActivityForResult(i,REQUEST_CODE); 
-                  itemsAdapter.notifyDataSetChanged();
-  				saveItems();
-
+                	  intent.putExtra("item", updateItem); 
+                	  intent.putExtra("position", position); 
+	                  // brings up the second activity
+	                  startActivityForResult(intent,REQUEST_CODE); 
+	                  itemsAdapter.notifyDataSetChanged();
+	                  saveItems();
+                  }
 	        }
-	});
+		});
 	}
 	
 	@Override
