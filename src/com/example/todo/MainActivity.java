@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,9 +19,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	private   final int REQUEST_CODE = 20;
 	ListView lvItems;
 	ArrayList<String> items;
 	ArrayAdapter<String> itemsAdapter;
@@ -52,8 +55,14 @@ public class MainActivity extends Activity {
 			  @Override
 			  public void onItemClick(AdapterView <? > parent, View view,
 	            int position, long id) {
-				  String test = (String) lvItems.getAdapter().getItem(position);  
-                  Log.i("Selected Item in list", test);  
+				  String updateItem = (String) lvItems.getAdapter().getItem(position);  
+                  Log.i("Selected Item in list", updateItem); 
+                  Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+                  // put "extras" into the bundle for access in the second activity
+                  i.putExtra("item", updateItem); 
+                  i.putExtra("position", position); 
+                  // brings up the second activity
+                  startActivityForResult(i,REQUEST_CODE); 
                   itemsAdapter.notifyDataSetChanged();
   				saveItems();
 
@@ -111,5 +120,19 @@ public class MainActivity extends Activity {
 			ex.printStackTrace();
 		}
 	}
-	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		  // REQUEST_CODE is defined above
+		  if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) 
+			 {
+		     // Extract name value from result extras
+		     String name = data.getExtras().getString("item");
+		     int position = Integer.parseInt(data.getExtras().getString("position"));
+		     // Toast the name to display temporarily on screen
+		     Toast.makeText(this, name+","+position, Toast.LENGTH_SHORT).show();
+		     items.set(position, name);
+		     Log.i("Updated Item in list:", name+",position:"+position); 
+		     itemsAdapter.notifyDataSetChanged();
+			 saveItems();
+		  }
+		}
 }

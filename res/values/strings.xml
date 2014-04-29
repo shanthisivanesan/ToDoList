@@ -2,10 +2,11 @@
 <resources>
 
     <string name="app_name">ToDoApp</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="tvEditLabel">Edit Item Below:</string>
     <string name="action_settings">Settings</string>
     <string name="btnLabel">Add</string>
     <string name="tvAddItem"></string>
     <string name="tvHint">Enter New Item</string>
+    <string name="title_activity_edit_item">EditItemActivity</string>
 
 </resources>
