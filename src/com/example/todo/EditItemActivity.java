@@ -5,24 +5,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class EditItemActivity extends Activity {
 	public int position=0;
+	EditText etItem; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_item);
-		String updateItem = getIntent().getStringExtra("item");
-		position = Integer.parseInt(getIntent().getStringExtra("position").toString());
-
+		//Get the data from the main screen
+		String editItem = getIntent().getStringExtra("item");
+		position = getIntent().getIntExtra("position",-1);
+		//Toast.makeText(this, editItem+"-"+position, Toast.LENGTH_SHORT).show();
+		// show in the text field
+		etItem = (EditText)findViewById(R.id.etEditItem);
+		etItem.setText(editItem);
 	}
 	
 	public void onSubmit(View v) {
-	  EditText etName = (EditText) findViewById(R.id.etItem);
+	  etItem = (EditText) findViewById(R.id.etEditItem);
 	  // Prepare data intent 
 	  Intent data = new Intent();
 	  // Pass relevant data back as a result
-	  data.putExtra("item", etName.getText().toString());
+	  data.putExtra("item", etItem.getText().toString());
 	  data.putExtra("position", position);
 	  
 	  

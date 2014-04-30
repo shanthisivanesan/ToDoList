@@ -59,9 +59,8 @@ public class MainActivity extends Activity {
                   Log.i("Selected Item in list", updateItem); 
                   Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
                   if(intent!=null)
-                  {
-                	  //Log.i("launch intent",updateItem);
-                  // put "extras" into the bundle for access in the second activity
+                  { 
+                  // put "extras" into the bundle for access in the edit activity
                 	  intent.putExtra("item", updateItem); 
                 	  intent.putExtra("position", position); 
 	                  // brings up the second activity
@@ -92,15 +91,8 @@ public class MainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	public void onAddItemClick(View v) {
-		EditText text = (EditText)findViewById(R.id.etItem);
-		if (text.length() > 0) {
-		itemsAdapter.add(text.getText().toString());
-		text.setText("");
-		saveItems();
-		}
-		
-	}
+	
+	//Read from File
 	private void readItems(){
 		File filesDir = getFilesDir();
 		File todoFile = new File(filesDir,"todo.txt");
@@ -112,7 +104,7 @@ public class MainActivity extends Activity {
 			ex.printStackTrace();
 		}
 	}
-	
+	//Save in File
 	private void saveItems(){
 		File filesDir = getFilesDir();
 		File todoFile = new File(filesDir,"todo.txt");
@@ -125,15 +117,14 @@ public class MainActivity extends Activity {
 	}
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		  // REQUEST_CODE is defined above
-		  if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) 
+		  if (resultCode == RESULT_OK)
 			 {
 		     // Extract name value from result extras
-		     String name = data.getExtras().getString("item");
-		     int position = Integer.parseInt(data.getExtras().getString("position"));
-		     // Toast the name to display temporarily on screen
-		     Toast.makeText(this, name+","+position, Toast.LENGTH_SHORT).show();
-		     items.set(position, name);
-		     Log.i("Updated Item in list:", name+",position:"+position); 
+		     String editedItem = data.getExtras().getString("item");
+		     int position = data.getIntExtra("position",-1);
+		     items.set(position, editedItem);
+		     Log.i("Updated Item in list:", editedItem+",position:"+position); 
+		     //save items
 		     itemsAdapter.notifyDataSetChanged();
 			 saveItems();
 		  }
